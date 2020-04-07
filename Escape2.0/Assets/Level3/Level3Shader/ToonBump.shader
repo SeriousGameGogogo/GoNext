@@ -214,7 +214,7 @@ Shader "Escape/Level 2/ToonBump"
 
                 fixed3 diffuseTexture = tex2D(_DiffuseTex, i.uv);
                 //Use the texture to sample the diffuse color
-                fixed halfLambert = 0.5 * dot(bump, worldLightDir) + 0.5;
+                fixed halfLambert = (0.5 * dot(bump, worldLightDir) + 0.5) * atten;
                 fixed3 rampTexture = tex2D(_RampTex, fixed2(halfLambert , 1)).rgb;
                 fixed3 diffuseColor = rampTexture * _Color.rgb * diffuseTexture;
                 //fixed3 specularColor = tex2D(_RampTex, fixed2(halfLambert, 1)).rgb * 
@@ -222,7 +222,7 @@ Shader "Escape/Level 2/ToonBump"
                 fixed3 halfDir = normalize(worldLightDir + viewDir);
                 fixed3 specular = _LightColor0 * _Specular * pow(max(0,dot(bump, halfDir)), _Gloss);
                 fixed3 smoothSpecular = smoothstep(0.01, 0.02, specular);
-                return fixed4(diffuse * atten, 1.0); 
+                return fixed4(diffuse, 1.0); 
             }
 
             ENDCG
